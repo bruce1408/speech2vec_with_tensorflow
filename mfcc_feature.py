@@ -11,20 +11,16 @@ import numpy as np
 import os
 np.set_printoptions(suppress=True, threshold=np.NaN)
 
-localDataPath = "/Users/bruce/Downloads/speech_commands_v0.02/eight/"
+localDataPath = "/xxx/speech_commands_v0.02/eight/"
 fileList = os.listdir(localDataPath)
-a = list()
 for wavPath in fileList:
     filePath = os.path.join(localDataPath, wavPath)
     print(filePath)
-    # (rate, sig) = wav.read("/Users/bruce/Downloads/speech_commands_v0.02/house/e102119e_nohash_1.wav")
     (rate, sig) = wav.read(filePath)
     mfcc_feat = mfcc(sig, rate)
-    # print(mfcc_feat.shape)
-    # a.append(mfcc_feat.shape[0])
-    # print(set(a.append(mfcc_feat.shape[0])))
-# d_mfcc_feat = delta(mfcc_feat, 2)
-#     fbank_feat = logfbank(sig, rate)
-#     print(fbank_feat.shape)
-# print(fbank_feat[1:3, :])
-# print(set(a))
+    print(mfcc_feat.shape)
+    d_mfcc_feat = delta(mfcc_feat, 2)
+    print(d_mfcc_feat.shape)
+    fbank_feat = logfbank(sig, rate)
+    print(fbank_feat.shape)
+    print(fbank_feat[1:3, :])
