@@ -1,8 +1,13 @@
 # coding=utf-8
 import tensorflow as tf
-import helpers
-from tqdm import tqdm, trange
 import numpy as np
+import helpers
+old_v = tf.logging.get_verbosity()
+tf.logging.set_verbosity(tf.logging.ERROR)
+tf.set_random_seed(1)
+from tqdm import tqdm, trange
+
+
 
 old_v = tf.logging.get_verbosity()
 tf.logging.set_verbosity(tf.logging.ERROR)
@@ -22,23 +27,24 @@ decoder_hidden_units = encoder_hidden_units
 
 # encoder_decoder_input
 encoder_inputs = tf.placeholder(tf.int32, [None, None], name='encoder_inputs')
-
 decoder_targets = tf.placeholder(tf.int32, [None, None], name='decoder_targets')
 decoder_inputs = tf.placeholder(tf.int32, [None, None], name='decoder_inputs')
 
 embeddings = tf.Variable(tf.random_uniform([vocab_size, input_embedding_size], -1.0, 1.0), dtype=tf.float32)
 
 encoder_inputs_embedded = tf.nn.embedding_lookup(embeddings, encoder_inputs)
-# encoder_inputs_embedded = tf.Print(encoder_inputs_embedded, [tf.shape(encoder_inputs_embedded)])
+encoder_inputs_embedded = tf.Print(encoder_inputs_embedded, [tf.shape(encoder_inputs_embedded)],
+message='encoder_inputs_embed')
 decoder_inputs_embedded = tf.nn.embedding_lookup(embeddings, decoder_inputs)
-# decoder_inputs_embedded = tf.Print(decoder_inputs_embedded, [tf.shape(decoder_inputs_embedded)])
+# decoder_inputs_embedded = tf.Print(decoder_inputs_embedded, [tf.shape(decoder_inputs_embedded)],
+# message='decoder_inputs_embed')
 
 
 # define encoder layer
 encoder_cell = tf.contrib.rnn.LSTMCell(encoder_hidden_units)
 encoder_outputs, encoder_final_state = tf.nn.dynamic_rnn(encoder_cell, encoder_inputs_embedded,
                                                          dtype=tf.float32,
-                                                         time_major=True)
+                                                         time_major=False)
 del encoder_outputs
 
 # define decoder layer
@@ -48,13 +54,13 @@ decoder_outputs, decoder_final_state = tf.nn.dynamic_rnn(
     decoder_inputs_embedded,
     initial_state=encoder_final_state,
     dtype=tf.float32,
-    time_major=True,
+    time_major=False,
     scope='plain_decoder',)
 # decoder_outputs shape = [None, None, 20]
 
-decoder_logits = tf.contrib.layers.linear(decoder_outputs, vocab_size)  # shape [None, None, 10]
-
-decoder_prediction = tf.argmax(decoder_logits, 2)  # shape[None, None]
+decoder_logits = tf.contrib.layers.linear(decoder_outputs, vocab_size)  # shape [batch, max_step, 10]
+# decoder_logits = tf.Print(decoder_logits, [tf.shape(decoder_logits)], message='decoder_logits')
+decoder_prediction = tf.argmax(decoder_logits, 2)  # shape[None, None] = [batch, max_step]
 
 # optimizer
 stepwise_cross_entropy = tf.nn.softmax_cross_entropy_with_logits(
@@ -105,7 +111,7 @@ def next_feed():
 
 loss_track = []
 epochs = 30001
-batches_in_epoch = 1000
+batches_in_epoch = 100
 init = tf.global_variables_initializer()
 with tf.Session() as sess:
     sess.run(init)
@@ -114,12 +120,12 @@ with tf.Session() as sess:
             fd = next_feed()
             _, l, enfs= sess.run([train_op, loss, encoder_final_state], fd)
             loss_track.append(l)
-            print('enfs\n', enfs.__len__())
+            # print('enfs\n', enfs.__len__())
             if batch == 0 or batch % batches_in_epoch == 0:
                 print('epoch {}'.format(batch))
                 print('  minibatch loss: {}'.format(sess.run(loss, fd)))
                 predict_ = sess.run(decoder_prediction, fd)
-                for i, (inp, pred) in enumerate(zip(fd[encoder_inputs].T, predict_.T)):
+                for i, (inp, pred) in enumerate(zip(fd[encoder_inputs], predict_)):
                     print('  sample {}:'.format(i + 1))
                     print('    input     > {}'.format(inp))
                     print('    predicted > {}'.format(pred))

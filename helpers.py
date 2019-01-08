@@ -34,9 +34,10 @@ def batch(inputs, max_sequence_length=None):
             inputs_batch_major[i, j] = element
 
     # [batch_size, max_time] -> [max_time, batch_size]
-    inputs_time_major = inputs_batch_major.swapaxes(0, 1)
+    # inputs_time_major = inputs_batch_major.swapaxes(0, 1) # 如果是运行seq2seq_tutorial,那么这句话以及下面的return不能注释
 
-    return inputs_time_major, sequence_lengths
+    # return inputs_time_major, sequence_lengths
+    return inputs_batch_major, sequence_lengths
 
 
 def random_sequences(length_from, length_to,
@@ -56,8 +57,7 @@ def random_sequences(length_from, length_to,
 
     while True:
         yield [
-            np.random.randint(low=vocab_lower,
-                              high=vocab_upper,
-                              size=random_length()).tolist()
-            for _ in range(batch_size)
-        ]
+            np.random.randint(low=vocab_lower, high=vocab_upper, size=random_length()).tolist() for _ in range(batch_size)]
+
+
+
