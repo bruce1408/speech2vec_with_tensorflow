@@ -83,9 +83,6 @@
 #     predicting_decoder_output, _, _ = tf.contrib.seq2seq.dynamic_decode(predicting_decoder, impute_finished=True,
 #                                                                         maximum_iterations=tf.constant(2))
 #
-#
-#
-#
 # # with tf.variable_scope("decode"):
 # init = tf.global_variables_initializer()
 # with tf.Session() as sess:
@@ -94,28 +91,4 @@
 #     # print(sess.run(encoder_states, feed_dict={X_input: X}))
 #     batch_word = sess.run(predicting_decoder_output, feed_dict={X_input: X, Y_input: label})
 #     print(batch_word.shape)
-
-
-class A:
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
-
-    def __hello__(self):
-        self.c = self.x + self.y
-        print(self.c)
-        return self.c
-
-    def get_shape(self):
-         print(self.x)
-         return self.x
-
-
-a = A(3, 4)
-a.get_shape()
-a.__hello__()
-
-
-
-
 

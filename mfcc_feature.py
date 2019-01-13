@@ -28,19 +28,19 @@ for wavPath in fileList:
 
 
 # 音频切词
-# from pydub import AudioSegment
-# from pydub.silence import split_on_silence
-#
-# # 这里silence_thresh是认定小于-70dBFS以下的为silence，发现小于-70dBFS部分超过 700毫秒，就进行拆分。这样子分割成一段一段的。
-#
-# from pydub.silence import split_on_silence
-# sound_file = AudioSegment.from_wav("/Users/bruce/Downloads/speech/LibriSpeech"
-#                                    "/train-clean-100/wavFile/103-1240-0025.wav")
-# audio_chunks = split_on_silence(sound_file, min_silence_len=20, silence_thresh=-33)  # 这个参数是最优的
-# for i, chunk in enumerate(audio_chunks):
-#     out_file = "/Users/bruce/Downloads/speech/LibriSpeech/train-clean-100/wavFile/split_{0}.wav".format(i)
-#     print("exporting", out_file)
-#     chunk.export(out_file, format="wav")
+from pydub import AudioSegment
+from pydub.silence import split_on_silence
+
+# 这里silence_thresh是认定小于-70dBFS以下的为silence，发现小于-70dBFS部分超过 700毫秒，就进行拆分。这样子分割成一段一段的。
+
+from pydub.silence import split_on_silence
+sound_file = AudioSegment.from_wav("/Users/bruce/Downloads/speech/LibriSpeech"
+                                   "/train-clean-100/wavFile/103-1240-0025.wav")
+audio_chunks = split_on_silence(sound_file, min_silence_len=20, silence_thresh=-33)  # 这个参数是最优的
+for i, chunk in enumerate(audio_chunks):
+    out_file = "/Users/bruce/Downloads/speech/LibriSpeech/train-clean-100/wavFile/split_{0}.wav".format(i)
+    print("exporting", out_file)
+    chunk.export(out_file, format="wav")
 # ffmpeg -i 103-1240-0057.wav -f segment -segment_time 1 -c copy out%03d.wav
 
 
@@ -52,4 +52,6 @@ for wavPath in fileList:
 #         line = line.strip('\n').split(' ')
 #         dictionary[line[0]] = line.__len__()-1
 # print(dictionary)
+
+
 

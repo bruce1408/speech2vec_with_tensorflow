@@ -3,7 +3,9 @@ import tensorflow as tf
 import helpers
 from tqdm import tqdm, trange
 import numpy as np
-
+"""
+这部分代码运行前要全修改helpers的最后的返回值，否则出错。
+"""
 old_v = tf.logging.get_verbosity()
 tf.logging.set_verbosity(tf.logging.ERROR)
 tf.set_random_seed(1)
@@ -114,7 +116,7 @@ with tf.Session() as sess:
             fd = next_feed()
             _, l, enfs= sess.run([train_op, loss, encoder_final_state], fd)
             loss_track.append(l)
-            print('enfs\n', enfs.__len__())
+            # print('enfs\n', enfs.__len__())
             if batch == 0 or batch % batches_in_epoch == 0:
                 print('epoch {}'.format(batch))
                 print('  minibatch loss: {}'.format(sess.run(loss, fd)))

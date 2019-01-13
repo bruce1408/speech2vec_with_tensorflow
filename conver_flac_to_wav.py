@@ -34,12 +34,12 @@ for filePath in dictionary:
 # print(flacFinalPath)
 # print(finalPath)
 # 保存 flac 原始音频文件的目录
-dt = h5py.special_dtype(vlen=str)
-flacFinal = np.array(flacFinalPath)
-
-f = h5py.File('./totalFlacPath.hdf5', 'w')
-f.attrs['flacPath'] = np.string_(flacFinalPath)
-f.attrs['wavPath'] = np.string_(finalPath)
+# dt = h5py.special_dtype(vlen=str)
+# flacFinal = np.array(flacFinalPath)
+#
+# f = h5py.File('./totalFlacPath.hdf5', 'w')
+# f.attrs['flacPath'] = np.string_(flacFinalPath)
+# f.attrs['wavPath'] = np.string_(finalPath)
 
 r = h5py.File('./totalFlacPath.hdf5', 'r')
 for i in r.attrs:

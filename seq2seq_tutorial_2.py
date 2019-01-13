@@ -33,8 +33,8 @@ decoder_inputs = tf.placeholder(tf.int32, [None, None], name='decoder_inputs')
 embeddings = tf.Variable(tf.random_uniform([vocab_size, input_embedding_size], -1.0, 1.0), dtype=tf.float32)
 
 encoder_inputs_embedded = tf.nn.embedding_lookup(embeddings, encoder_inputs)
-encoder_inputs_embedded = tf.Print(encoder_inputs_embedded, [tf.shape(encoder_inputs_embedded)],
-message='encoder_inputs_embed')
+# encoder_inputs_embedded = tf.Print(encoder_inputs_embedded, [tf.shape(encoder_inputs_embedded)],
+# message='encoder_inputs_embed')
 decoder_inputs_embedded = tf.nn.embedding_lookup(embeddings, decoder_inputs)
 # decoder_inputs_embedded = tf.Print(decoder_inputs_embedded, [tf.shape(decoder_inputs_embedded)],
 # message='decoder_inputs_embed')
