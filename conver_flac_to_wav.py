@@ -7,6 +7,7 @@ from tqdm import tqdm, trange
 
 # 生成flac目录
 localPath = "/Users/bruce/Downloads/speech/LibriSpeech/train-clean-100/"
+# localPath = '/Users/bruce/Downloads/train_360/train-clean-360/'
 wavPath = "/Users/bruce/Downloads/speech/LibriSpeech/train_waveFile_100"
 convertFile = '.wav'
 firstDir = os.listdir(localPath)
@@ -31,8 +32,9 @@ for filePath in dictionary:
         wavPathFile = os.path.join(localPathFile, j)
         finalPath.append(wavPathFile)
 
-# print(flacFinalPath)
-# print(finalPath)
+
+print(flacFinalPath)
+print(finalPath)
 # 保存 flac 原始音频文件的目录
 # dt = h5py.special_dtype(vlen=str)
 # flacFinal = np.array(flacFinalPath)
@@ -41,11 +43,11 @@ for filePath in dictionary:
 # f.attrs['flacPath'] = np.string_(flacFinalPath)
 # f.attrs['wavPath'] = np.string_(finalPath)
 
-r = h5py.File('./totalFlacPath.hdf5', 'r')
-for i in r.attrs:
-    print(r.attrs[i])
-    for j in (r.attrs[i]):
-        print(os.listdir(j))
+# r = h5py.File('./totalFlacPath.hdf5', 'r')
+# for i in r.attrs:
+#     print(r.attrs[i])
+#     for j in (r.attrs[i]):
+#         print(os.listdir(j))
 
 # f.create_dataset('flacPath', data=flacFinalPath, dtype=dt)
 # f['flacPath'] = flacFinal
@@ -71,7 +73,6 @@ for i in r.attrs:
 #             wavPathSave = os.path.join(wavPath, preFile)+convertFile
 #             # print(wavPathSave)
 #             AudioSegment.from_file(flacPath).export(wavPathSave, format='wav')
-
 
 
 
