@@ -2,13 +2,14 @@
 from pydub import AudioSegment
 import os
 import h5py
+import pickle
 import numpy as np
 from tqdm import tqdm, trange
 
 # 生成flac目录
-localPath = "/Users/bruce/Downloads/speech/LibriSpeech/train-clean-100/"
+localPath = "/Users/bruce/Downloads/speechTrain500/LibriSpeech/train-other-500/"
 # localPath = '/Users/bruce/Downloads/train_360/train-clean-360/'
-wavPath = "/Users/bruce/Downloads/speech/LibriSpeech/train_waveFile_100"
+wavPath = "/Users/bruce/Downloads/speechTrain500/LibriSpeech/train_waveFile_500"
 convertFile = '.wav'
 firstDir = os.listdir(localPath)
 thirdDir = list()
@@ -36,11 +37,10 @@ for filePath in dictionary:
 print(flacFinalPath)
 print(finalPath)
 # 保存 flac 原始音频文件的目录
-# dt = h5py.special_dtype(vlen=str)
-# flacFinal = np.array(flacFinalPath)
-#
-# f = h5py.File('./totalFlacPath.hdf5', 'w')
-# f.attrs['flacPath'] = np.string_(flacFinalPath)
+wavFilePath = open('train_500_wav_path', 'wb')
+pickle.dump(finalPath, wavFilePath)
+
+
 # f.attrs['wavPath'] = np.string_(finalPath)
 
 # r = h5py.File('./totalFlacPath.hdf5', 'r')
